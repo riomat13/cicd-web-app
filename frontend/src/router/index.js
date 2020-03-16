@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/views/Index'
+import Login from '@/views/Login'
 import About from '@/views/About'
 import Blog from '@/views/BlogTop'
 
@@ -14,6 +15,12 @@ export default new Router({
       path: '/',
       name: 'index',
       component: Index
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login,
+      meta: { hideNavigation: true }
     },
     {
       path: '/about',

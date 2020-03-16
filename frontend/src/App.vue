@@ -1,21 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar class="deep-purple" app>
-      <v-toolbar-title class="headline">CI/CD Practice App</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-toolbar-items>
-        <v-btn
-          text
-          v-for="item in menuItems"
-          :key="item.title"
-          :to="item.path">
-          {{ item.title }}
-        </v-btn>
-        <v-btn text v-if="!loggedin" @click="loggedin=!loggedin">Login</v-btn>
-        <v-btn text v-else @click="loggedin=!loggedin">Logout</v-btn>
-      </v-toolbar-items>
-    </v-app-bar>
-
+    <navBar />
     <v-content fluid>
       <div class="content">
         <router-view />
@@ -25,17 +10,12 @@
 </template>
 
 <script>
+import NavBar from '@/components/NavBar.vue'
+
 export default {
   name: 'App',
-  data () {
-    return {
-      loggedin: false,
-      menuItems: [
-        { title: 'Home', path: '/' },
-        { title: 'About', path: '/about' },
-        { title: 'Blog', path: '/blog' }
-      ]
-    }
+  components: {
+    navBar: NavBar
   }
 }
 </script>
