@@ -8,4 +8,4 @@ from ..models import Content
 class ContentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Content
-        fields = ['title', 'slug', 'uuid', 'content']
+        fields = ['title', 'slug', 'uuid', 'headline', 'text', 'created_at', 'updated_at']

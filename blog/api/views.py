@@ -1,25 +1,48 @@
 #!/usr/bin/env python3
 
+from rest_framework.views import APIView
 from rest_framework.generics import (
-    ListCreateAPIView,
+    ListAPIView,
     RetrieveUpdateDestroyAPIView
 )
-from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.response import Response
+from rest_framework.status import (
+    HTTP_200_OK,
+    HTTP_400_BAD_REQUEST,
+)
 
 from ..models import Content
 from .serializers import ContentSerializer
 
 
-class ContentCreateAPIView(ListCreateAPIView):
+class ContentAPIView(ListAPIView):
     queryset = Content.objects.all()
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     serializer_class = ContentSerializer
     lookup_field = 'uuid'
 
 
-class ContentRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Content.objects.all()
-    permission_classes = (IsAuthenticated,)
+class ContentCreateAPIView(APIView):
+    permission_classes = (IsAdminUser,)
     serializer_class = ContentSerializer
-    lookup_field = 'uuid'
+
+    def post(self, request, *args, **kwargs):
+        title = request.data.get('title')
+        text = request.data.get('text')
+        headline = request.data.get('headline')
+
+        try:
+            content = Content(title=title, headline=headline, text=text)
+            content.save()
+        except Exception as e:
+            return Response({
+                'detail': 'failed content creation',
+                'error': str(e)
+            }, HTTP_400_BAD_REQUEST)
+
+        serialized = ContentSerializer(content)
+
+        return Response({
+            'content': serialized.data
+        }, HTTP_200_OK)
