@@ -31,9 +31,10 @@ class ContentCreateAPIView(APIView):
         title = request.data.get('title')
         text = request.data.get('text')
         headline = request.data.get('headline')
+        img = request.data.get('img')
 
         try:
-            content = Content(title=title, headline=headline, text=text)
+            content = Content(title=title, headline=headline, text=text, img=img)
             content.save()
         except Exception as e:
             return Response({

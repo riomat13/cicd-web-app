@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import moment from 'moment'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -12,6 +13,12 @@ Vue.prototype.$http =
   process.env.VUE_APP_REST_SERVER === 'mock-server'
     ? require('axios').create({ baseURL: 'http://localhost:3000' })
     : require('axios').create()
+
+Vue.filter('formatDate', function (value) {
+  if (value) {
+    return moment(String(value)).format('MM/DD/YYYY')
+  }
+})
 
 const token = localStorage.getItem('token')
 if (token) {

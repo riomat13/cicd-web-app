@@ -16,6 +16,7 @@ class Content(models.Model):
         editable=False
     )
     headline = models.CharField(max_length=256, blank=True)
+    img = models.CharField(max_length=128, blank=True)
     text = models.TextField(blank=False)
     created_at = models.DateTimeField(editable=False, null=True)
     updated_at = models.DateTimeField(null=True)

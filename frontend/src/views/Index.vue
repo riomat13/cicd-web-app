@@ -1,7 +1,7 @@
 <template>
   <div class="index-content">
-    <h1 v-if="this.$store.getters.isLoggedIn" >Hello {{ username }}!</h1>
-    <h1 v-else class="content-title">Top page</h1>
+    <h1 class="display-3 font-light" v-if="this.$store.getters.isLoggedIn" >Hello {{ username }}!</h1>
+    <h1 class="display-3 font-light" v-else>Top page</h1>
   </div>
 </template>
 
@@ -20,17 +20,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-</style>

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1 class="content-title">About</h1>
-    <p class="text-left">This is a web app for practicing CI/CD. The app is developed with <code>Django</code> and <code>Vue.js</code>.</p>
+    <h1 class="display-3 font-light mb-10">About</h1>
+    <p class="body-1">This is a web app for practicing CI/CD. The app is developed with <code>Django</code> and <code>Vue.js</code>.</p>
   </div>
 </template>
 
@@ -9,9 +9,3 @@
 export default {
 }
 </script>
-
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-</style>

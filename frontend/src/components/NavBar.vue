@@ -1,6 +1,6 @@
 <template>
     <v-app-bar v-if="!$route.meta.hideNavigation" class="deep-purple" app>
-      <v-toolbar-title class="headline">CI/CD Practice App</v-toolbar-title>
+      <v-toolbar-title class="headline display-4 font-weight-regular font-italic white--text">CI/CD Practice App</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn text v-for="item in menuItems" :key="item.title" :to="item.path">{{ item.title }}</v-btn>
