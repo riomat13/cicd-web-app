@@ -1,12 +1,23 @@
 <template>
   <div class="index-content">
-    <h1 class="content-title">Top page</h1>
+    <h1 v-if="this.$store.getters.isLoggedIn" >Hello {{ username }}!</h1>
+    <h1 v-else class="content-title">Top page</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Top'
+  name: 'Top',
+  data () {
+    return {
+      username: ''
+    }
+  },
+  mounted () {
+    if (localStorage.username) {
+      this.username = localStorage.username
+    }
+  }
 }
 </script>
 

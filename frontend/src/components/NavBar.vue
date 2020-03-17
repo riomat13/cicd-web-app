@@ -1,5 +1,4 @@
 <template>
-  <v-app>
     <v-app-bar v-if="!$route.meta.hideNavigation" class="deep-purple" app>
       <v-toolbar-title class="headline">CI/CD Practice App</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -21,13 +20,6 @@
         </v-dialog>
       </v-toolbar-items>
     </v-app-bar>
-
-    <v-content fluid>
-      <div class="content">
-        <router-view />
-      </div>
-    </v-content>
-  </v-app>
 </template>
 
 <script>

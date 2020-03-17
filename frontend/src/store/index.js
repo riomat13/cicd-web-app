@@ -6,47 +6,50 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     status: '',
-    token: localStorage.getItem('token') || '',
-    user: ''
+    access: localStorage.getItem('at') || '',
+    refresh: localStorage.getItem('rt') || '',
+    isAuthenticated: localStorage.getItem('username') !== ''
   },
   mutations: {
     auth_request (state) {
       state.status = 'loading'
     },
-    auth_success (state, token, user) {
+    auth_success (state, access, refresh) {
       state.status = 'success'
-      state.token = token
-      state.user = user
+      state.isAuthenticated = true
     },
     auth_failed (state) {
       state.status = 'error'
     },
     logout (state) {
       state.status = ''
-      state.token = ''
-      state.user = ''
+      state.isAuthenticated = false
     }
   },
   actions: {
-    login: ({ commit }, username, password) => {
+    login: ({ commit }, data) => {
       return new Promise((resolve, reject) => {
         commit('auth_request')
-        Vue.prototype.$http.post('/api/account/login',
+        Vue.prototype.$http.post('/api/account/login/token/',
           {
-            username: username,
-            password: password
+            username: data.username,
+            password: data.password
           })
           .then((response) => {
-            const token = response.data.token
-            const user = response.data.user
-            Vue.prototype.$http.defaults.headers.common.Authorization = token
-            localStorage.setItem('token', token)
-            commit('auth_success', token, user)
+            const access = response.data.access
+            const refresh = response.data.refresh
+            Vue.prototype.$http.defaults.headers.common.Authorization = access
+            localStorage.setItem('at', access)
+            localStorage.setItem('rt', refresh)
+            commit('auth_success', access, refresh)
+            localStorage.setItem('username', data.username)
             resolve(response)
           })
           .catch((err) => {
             commit('auth_failed')
-            localStorage.removeItem('token')
+            localStorage.removeItem('at')
+            localStorage.removeItem('rt')
+            localStorage.removeItem('username')
             reject(err)
           })
       })
@@ -54,7 +57,8 @@ export default new Vuex.Store({
     logout: ({ commit }) => {
       return new Promise((resolve, reject) => {
         commit('logout')
-        localStorage.removeItem('token')
+        localStorage.removeItem('at')
+        localStorage.removeItem('rt')
         delete Vue.prototype.$http.defaults.headers.common.Authorization
         resolve()
       })
@@ -63,7 +67,6 @@ export default new Vuex.Store({
   modules: {
   },
   getters: {
-    isLoggedIn: state => !!state.token,
-    getAuthStatus: state => state.status
+    isLoggedIn: state => state.isAuthenticated
   }
 })

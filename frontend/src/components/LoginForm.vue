@@ -30,7 +30,7 @@
     <v-card-actions class="pa-4">
       <v-spacer></v-spacer>
       <v-btn color="normal" :to="'/'" text>Back</v-btn>
-      <v-btn color="primary" v-on:click="login()">Login</v-btn>
+      <v-btn color="primary" v-on:click="login()" :disabled="!(validUsername && validPassword)">Login</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -41,8 +41,11 @@ export default {
     return {
       username: '',
       password: '',
+      validUsername: false,
+      validPassword: false,
       nameRules: [
         v => !!v || 'Username is required',
+        v => v.length > 4 || 'Username must be at least 5 characters',
         v => v.length <= 20 || 'Username must be less than 20 characters'
       ],
       passwordRules: [
@@ -52,6 +55,22 @@ export default {
       ]
     }
   },
+  watch: {
+    username: function (username) {
+      if (username.length > 4 && username.length < 21) {
+        this.validUsername = true
+      } else {
+        this.validUsername = false
+      }
+    },
+    password: function (password) {
+      if (password.length > 7 && password.length < 21) {
+        this.validPassword = true
+      } else {
+        this.validPassword = false
+      }
+    }
+  },
   methods: {
     login () {
       const username = this.username
@@ -59,7 +78,7 @@ export default {
       this.$store
         .dispatch('login', { username, password })
         .then(() => this.$router.push('/'))
-        .catch(err => console.log(err))
+        // .catch(err => console.log(err))  // TODO: send log
     }
   }
 }

@@ -26,6 +26,10 @@ def login(request):
     if not login_serializer.is_valid():
         return Response(login_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
+    import sys
+    print(login_serializer.data['username'], file=sys.stdout)
+    print(login_serializer.data['password'], file=sys.stdout)
+
     user = authenticate(
         username=login_serializer.data['username'],
         password=login_serializer.data['password']
