@@ -5,6 +5,16 @@
         <h3>Login</h3>
       </v-toolbar-title>
     </v-toolbar>
+    <v-alert
+      class="ma-5 body-2"
+      v-if="invalidInput"
+      border="top"
+      colored-border
+      type="error"
+      elevation=2
+    >
+      Wrong username and/or password
+    </v-alert>
     <v-card-text class="pa-3 my-4">
       <v-form ref="form" lazy-validation>
         <v-text-field
@@ -43,6 +53,7 @@ export default {
       password: '',
       validUsername: false,
       validPassword: false,
+      invalidInput: false,
       nameRules: [
         v => !!v || 'Username is required',
         v => v.length > 4 || 'Username must be at least 5 characters',
@@ -73,12 +84,15 @@ export default {
   },
   methods: {
     login () {
+      const self = this
       const username = this.username
       const password = this.password
       this.$store
         .dispatch('login', { username, password })
         .then(() => this.$router.push('/'))
-        // .catch(err => console.log(err))  // TODO: send log
+        .catch(function (err) {
+          self.invalidInput = err !== null // how to handle error?
+        })
     }
   }
 }
