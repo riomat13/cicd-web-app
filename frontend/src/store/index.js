@@ -8,7 +8,7 @@ export default new Vuex.Store({
     status: '',
     access: localStorage.getItem('at') || '',
     refresh: localStorage.getItem('rt') || '',
-    isAuthenticated: localStorage.getItem('username') !== ''
+    isAuthenticated: localStorage.getItem('username') !== null
   },
   mutations: {
     auth_request (state) {
@@ -21,7 +21,7 @@ export default new Vuex.Store({
     auth_failed (state) {
       state.status = 'error'
     },
-    logout (state) {
+    let_logout (state) {
       state.status = ''
       state.isAuthenticated = false
     }
@@ -56,10 +56,11 @@ export default new Vuex.Store({
     },
     logout: ({ commit }) => {
       return new Promise((resolve, reject) => {
-        commit('logout')
         localStorage.removeItem('at')
         localStorage.removeItem('rt')
+        localStorage.removeItem('username')
         delete Vue.prototype.$http.defaults.headers.common.Authorization
+        commit('let_logout')
         resolve()
       })
     }
@@ -67,6 +68,6 @@ export default new Vuex.Store({
   modules: {
   },
   getters: {
-    isLoggedIn: state => state.isAuthenticated
+    isLoggedIn: state => !!state.isAuthenticated
   }
 })

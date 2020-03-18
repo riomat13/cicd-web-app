@@ -42,8 +42,8 @@ export default {
   },
   methods: {
     logout () {
+      this.loggingOut = false
       this.$store.dispatch('logout').then(() => {
-        this.loggingOut = false
         if (this.$route.path !== '/') {
           this.$router.push('/')
         }
