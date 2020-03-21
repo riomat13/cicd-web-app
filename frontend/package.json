@@ -10,7 +10,7 @@
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "eslint --ext .js,.vue src test/unit",
-    "mock-server": "npx json-server --watch mockdb.json --routes dev/routes.json",
+    "mock-server": "npx json-server --watch dev/mock-server/db.json --routes dev/routes.json",
     "test": "npm run unit",
     "unit": "jest --config test/unit/jest.conf.js --coverage"
   },

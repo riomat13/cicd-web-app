@@ -13,7 +13,7 @@
     <v-img
       class="white--text align-end"
       height="250px"
-      :src="blog.img"
+      v-bind:src="blog.image.path"
     >
       <v-card-title>{{ blog.title }}</v-card-title>
     </v-img>

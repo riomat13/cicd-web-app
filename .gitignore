@@ -8,6 +8,7 @@ __pycache__/
 migrations/
 data/
 imgs/
+media/
 
 # development
 json-server.json

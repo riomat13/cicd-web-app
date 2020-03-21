@@ -25,9 +25,9 @@ BASE_DIR = Path(os.path.dirname(__file__)).parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'foo')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost').split()
 
 
 # Application definition
@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 REST_FRAMEWORK = {
@@ -69,7 +70,9 @@ REST_FRAMEWORK = {
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITE_LIST = [
+    'http://0.0.0.0:8080',
     'http://localhost:8080',
+    'http://127.0.0.1:8080',
 ]
 
 ROOT_URLCONF = 'cicd_app.urls'
@@ -110,7 +113,7 @@ DATABASES = {
 AUTH_USER_MODEL = 'accounts.User'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
@@ -173,6 +176,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = f'{BASE_DIR}/static/'
 STATICFILES_DIRS = [
     f'{BASE_DIR}/frontend/dist/static/',
 ]
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = f'{BASE_DIR}/media/'

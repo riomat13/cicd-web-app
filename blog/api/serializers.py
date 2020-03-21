@@ -5,7 +5,9 @@ from rest_framework import serializers
 from ..models import Content
 
 
-class ContentSerializer(serializers.ModelSerializer):
+class BlogContentSerializer(serializers.ModelSerializer):
+    path = serializers.CharField(max_length=128)
+
     class Meta:
         model = Content
-        fields = ['title', 'slug', 'uuid', 'headline', 'text', 'img', 'created_at', 'updated_at']
+        fields = ['title', 'slug', 'uuid', 'headline', 'text', 'image', 'created_at', 'updated_at']
