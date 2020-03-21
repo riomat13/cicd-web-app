@@ -21,10 +21,10 @@ class ImageJsonMultiPartParser(parsers.MultiPartParser):
         if parsed.data.get('data'):
             data = json.loads(parsed.data.get('data'))
 
-        query_dict = QueryDict('', mutable=True)
-        query_dict.update(data)
+            query_dict = QueryDict('', mutable=True)
+            query_dict.update(data)
 
-        # replace data in DataAndFile object to new dataset
-        parsed.data = query_dict
+            # replace data in DataAndFile object to new dataset
+            parsed.data = query_dict
 
         return parsed
