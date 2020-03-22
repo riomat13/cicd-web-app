@@ -2,12 +2,13 @@
 
 import io
 
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import transaction
 from django.test import TestCase
 
 from rest_framework.test import APIClient
 
-from ..models import BlogImage, Content
+from blog.models import Content
 from accounts.models import User
 
 
@@ -44,7 +45,15 @@ def setUpModule():
     )
 
 
-class BlogApiTest(TestCase):
+def create_image():
+    # setup mock image
+    img_file = io.BytesIO()
+    img_file.name = 'test.png'
+    img_file.seek(0)
+    return img_file
+
+
+class BlogCreationAPITest(TestCase):
 
     def setUp(self):
         self.client = APIClient()
@@ -66,13 +75,6 @@ class BlogApiTest(TestCase):
         )
         return response.data.get('access')
 
-    def create_image(self):
-        # setup mock image
-        img_file = io.BytesIO()
-        img_file.name = 'test.png'
-        img_file.seek(0)
-        return img_file
-
     def test_blog_item_creation(self):
         # test without authentication
         response = self.client.post(
@@ -80,7 +82,7 @@ class BlogApiTest(TestCase):
             {
                 'title': 'Test Title',
                 'headline': 'Lorem',
-                'text': 'Lorem ipsum dolor sit amet'
+                'body': 'Lorem ipsum dolor sit amet'
             },
             format='multipart'
         )
@@ -94,7 +96,7 @@ class BlogApiTest(TestCase):
             data={
                 'title': 'Test Title',
                 'headline': 'Lorem',
-                'text': 'Lorem ipsum dolor sit amet'
+                'body': 'Lorem ipsum dolor sit amet'
             },
             media='',
             HTTP_AUTHORIZATION=f'Bearer {token}',
@@ -105,7 +107,7 @@ class BlogApiTest(TestCase):
         self.assertEqual(response.status_code, 400)
 
         # setup mock image file to upload
-        img_data = self.create_image()
+        img_data = create_image()
 
         # test for working api (send and data creation)
         # this cannot test nested data
@@ -116,7 +118,7 @@ class BlogApiTest(TestCase):
                 {
                     'title': 'Test Title',
                     'headline': 'Lorem',
-                    'text': 'Lorem ipsum dolor sit amet',
+                    'body': 'Lorem ipsum dolor sit amet',
                     'media': img_data,
                 },
                 HTTP_AUTHORIZATION=f'Bearer {token}',
@@ -126,3 +128,44 @@ class BlogApiTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         self.assertEqual(Content.objects.count(), 1)
+
+
+class BlogExtractionAPITest(TestCase):
+
+    def create_content(self, n=1):
+        img_file = create_image()
+
+        for i in range(n):
+            f = SimpleUploadedFile(img_file.name, img_file.read())
+
+            Content.objects.create(
+                title=f'{i+1}-th title',
+                headline=f'{i+1}-th test headline',
+                body=f'{i+1}-th test content',
+                image=f,
+            )
+
+    def test_item_list(self):
+        target_count = 5
+        self.create_content(target_count)
+
+        # target attributes shoud be included in return items
+        attrs = ['title', 'headline', 'body', 'image', 'created_at', 'updated_at']
+        response = self.client.get('/api/blog/')
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.data
+
+        # check extracted data count is correct
+        self.assertEqual(len(data), target_count)
+        self.assertEqual(len(data), Content.objects.count())
+
+        # check all extracted items have expected attributes
+        for query in data:
+            keys = set(query.keys())
+
+            for attr in attrs:
+                self.assertIn(attr, keys)
+
+            self.assertIn('path', query.get('image'))

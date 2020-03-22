@@ -2,12 +2,7 @@
 
 from django.contrib import admin
 
-from .models import BlogImage, Content
-
-
-@admin.register(BlogImage)
-class BlogImageAdmin(admin.ModelAdmin):
-    pass
+from .models import Content
 
 
 @admin.register(Content)

@@ -18,7 +18,7 @@ from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
 )
 
-from ..models import Content, BlogImage
+from ..models import Content
 from .serializers import BlogContentSerializer
 from .parsers import ImageJsonMultiPartParser
 
@@ -41,8 +41,9 @@ class ContentAPIView(APIView):
                 'title': query.title,
                 'slug': query.slug,
                 'headline': query.headline,
+                'body': query.body,
                 'image': {
-                    'path': os.path.join('./', settings.MEDIA_URL, query.image.data.name)
+                    'path': os.path.join('./', settings.MEDIA_URL, query.image.name)
                 },
                 'created_at': query.created_at,
                 'updated_at': query.updated_at
@@ -57,7 +58,7 @@ class ContentCreateAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         title = request.data.get('title')
-        text = request.data.get('text')
+        body = request.data.get('body')
         headline = request.data.get('headline')
         image = request.data.get('media')
 
@@ -69,11 +70,9 @@ class ContentCreateAPIView(APIView):
         sid = transaction.savepoint()
 
         try:
-            image = BlogImage(data=image)
-            image.save()
             content = Content(title=title,
                               headline=headline,
-                              text=text,
+                              body=body,
                               image=image)
             content.save()
         except Exception as e:
@@ -85,5 +84,5 @@ class ContentCreateAPIView(APIView):
 
         return Response({
             'content': content.slug,
-            'image': image.id
+            'image': os.path.basename(image.name)
         }, HTTP_200_OK)

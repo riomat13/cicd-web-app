@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 
+import os
 import uuid
 
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
-
-
-class BlogImage(models.Model):
-    data = models.ImageField(upload_to='images/blog', blank=True)
 
 
 class Content(models.Model):
@@ -20,10 +17,10 @@ class Content(models.Model):
         editable=False
     )
     headline = models.CharField(max_length=256, blank=True)
-    text = models.TextField(blank=False)
+    body = models.TextField(blank=False)
     created_at = models.DateTimeField(editable=False, null=True)
     updated_at = models.DateTimeField(null=True)
-    image = models.OneToOneField(BlogImage, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images/blog', blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -32,3 +29,7 @@ class Content(models.Model):
             self.created_at = now
         self.updated_at = now
         return super(Content, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        os.remove(self.image.path)
+        super(Content, self).delete(*args, **kwargs)
