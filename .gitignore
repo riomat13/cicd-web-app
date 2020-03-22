@@ -2,8 +2,6 @@
 __pycache__/
 *egg-info/
 
-.coverage
-
 # data
 migrations/
 data/
@@ -18,6 +16,10 @@ dev/
 db.*
 *db
 *.sqlite3
+
+# test
+.tox/
+.coverage
 
 # logs
 logs/
