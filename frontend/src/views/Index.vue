@@ -8,12 +8,24 @@
       jumbotoron
     >
       <v-row align="center" justify="center">
+        <v-btn
+          v-if="!this.$store.getters.isLoggedIn"
+          class="mr-4"
+          absolute
+          top
+          right
+          color="white"
+          href="/login/"
+          outlined
+          x-large
+        >Login</v-btn>
         <v-col class="top-title text-md-left text-center">
           <h1 class="display-3 font-light" v-if="this.$store.getters.isLoggedIn">Hello {{ username }}!</h1>
-          <h1 class="display-3 font-light" v-else>Top page</h1>
+          <h1 class="display-3 font-light" v-else>CI/CD Blog App</h1>
         </v-col>
       </v-row>
     </v-parallax>
+
     <section id="about">
       <div class="py-12"></div>
 

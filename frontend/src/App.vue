@@ -1,23 +1,14 @@
 <template>
   <v-app>
-    <navBar v-if="this.$route.path!='/'" />
-    <v-content fluid>
+    <nav-bar
+      v-if="this.$route.path!='/'"
+      v-bind:isScrolled="activateElevation" />
+    <v-content v-scroll="onScroll" fluid>
       <div class="content">
         <router-view ref="chileComponent" />
       </div>
+      <go-to-top v-bind:activated="activateGoToTop" />
     </v-content>
-    <v-btn
-      v-show="isIntersecting"
-      fab
-      dark
-      fixed
-      bottom
-      right
-      color="pink"
-      @click="goToTop"
-    >
-      <v-icon>keyboard_arrow_up</v-icon>
-    </v-btn>
     <v-footer class="justify-center">
       <div class="text-center body-1 font-weight-regular my-2">
         &copy; {{ new Date().getFullYear() }} - <span id="footer-link"><img id="footer-icon" class="mx-2" :src="require('@/assets/media/images/github-mark-32px.png')" alt="" /><a href="https://github.com/riomat13/cicd-web-app">riomat13</a></span>
@@ -28,23 +19,27 @@
 
 <script>
 import NavBar from '@/components/NavBar.vue'
+import GoToTop from '@/components/GoToTop.vue'
 
 export default {
   name: 'App',
   components: {
-    navBar: NavBar
+    'nav-bar': NavBar,
+    'go-to-top': GoToTop
   },
   data () {
     return {
-      isIntersecting: false
+      activateGoToTop: false,
+      activateElevation: false
     }
   },
   methods: {
-    goToTop () {
-      this.$vuetify.goTo(0)
-    },
-    onIntersect (entries, observer) {
-      this.isIntersecting = entries[0].isIntersecting
+    onScroll (entry) {
+      if (typeof window !== 'undefined') {
+        const top = window.pageYOffset || entry.target.scrollTop || 0
+        this.activateGoToTop = top > window.innerHeight / 2
+        this.activateElevation = top > 0
+      }
     }
   }
 }

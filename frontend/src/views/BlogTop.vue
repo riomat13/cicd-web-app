@@ -1,26 +1,25 @@
 <template>
-  <v-container class="pa-4 mt-4 col-lg-6 col-md-8 col-10">
+  <v-container
+    class="pa-4 mt-4 col-lg-6 col-md-8 col-10"
+  >
     <h1 class="display-3 font-light">Blog</h1>
     <v-container v-if="blogs" fluid>
-      <blogCard
+      <blog-card
         v-for="blog in blogs"
         v-bind:key="blog.updated_at"
         v-bind:blog="blog"
-      ></blogCard>
+      ></blog-card>
     </v-container>
     <h2 v-else>Nothing to show...</h2>
-    <go-to-top />
   </v-container>
 </template>
 
 <script>
 import BlogCard from '@/components/BlogCard.vue'
-import GoToTop from '@/components/GoToTop.vue'
 
 export default {
   components: {
-    blogCard: BlogCard,
-    'go-to-top': GoToTop
+    'blog-card': BlogCard
   },
   data () {
     return {

@@ -1,8 +1,7 @@
 <template>
   <v-btn
     class="mr-5 mb-5"
-    v-scroll="onScroll"
-    v-show="isScrolled"
+    v-show="activated"
     fab
     dark
     fixed
@@ -17,20 +16,10 @@
 
 <script>
 export default {
-  data () {
-    return {
-      isScrolled: false
-    }
-  },
+  props: ['activated'],
   methods: {
     goToTop () {
       this.$vuetify.goTo(0)
-    },
-    onScroll (entry) {
-      if (typeof window !== 'undefined') {
-        const top = window.pageYOffset || entry.target.scrollTop || 0
-        this.isScrolled = top > window.innerHeight / 2
-      }
     }
   }
 }

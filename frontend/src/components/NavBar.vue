@@ -1,11 +1,41 @@
 <template>
-    <v-app-bar v-if="!$route.meta.hideNavigation" class="deep-purple" app>
-      <v-toolbar-title class="headline display-4 font-weight-regular font-italic white--text">CI/CD Practice App</v-toolbar-title>
+    <v-app-bar
+      v-if="!$route.meta.hideNavigation"
+      class="white"
+      height="75"
+      :elevation="isScrolled ? 6 : 0"
+      app
+    >
+      <v-toolbar-title
+        class="headline
+               px-2
+               font-weight-regular
+               font-italic
+               grey--text
+               text--darken-3"
+      >
+          CI/CD Blog App
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn text v-for="item in menuItems" :key="item.title" :to="item.path">{{ item.title }}</v-btn>
-        <v-btn text v-if="!isAuthenticated" :key="loginSet.title" :to="loginSet.path">Login</v-btn>
-        <v-btn text v-else @click.stop="loggingOut = true">Logout</v-btn>
+        <v-btn
+          class="px-7"
+          text
+          v-for="item in menuItems"
+          :key="item.title"
+          :to="item.path"
+        >{{ item.title }}</v-btn>
+        <v-btn
+          text
+          v-if="!isAuthenticated"
+          :key="loginSet.title"
+          :to="loginSet.path"
+        >Login</v-btn>
+        <v-btn
+          text
+          v-else
+          @click.stop="loggingOut = true"
+        >Logout</v-btn>
         <v-dialog v-model="loggingOut" max-width="300">
           <v-card>
             <v-card-title class="headline">Logout</v-card-title>
@@ -24,6 +54,7 @@
 
 <script>
 export default {
+  props: ['isScrolled'],
   data () {
     return {
       menuItems: [
