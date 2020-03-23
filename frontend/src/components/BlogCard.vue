@@ -5,7 +5,7 @@
 >
   <v-card
     class="mx-auto my-10"
-    width="70%"
+    width="85%"
     max-width="800px"
     :elevation="hover ? 10 : 4"
     :to="'#'"
