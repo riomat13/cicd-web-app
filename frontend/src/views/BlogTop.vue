@@ -5,10 +5,11 @@
     <h1 class="display-3 font-light">Blog</h1>
     <v-container v-if="blogs" fluid>
       <blog-card
-        v-for="blog in blogs"
-        v-bind:key="blog.updated_at"
+        v-for="(blog, index) in blogs"
+        v-bind:key="index"
         v-bind:blog="blog"
-      ></blog-card>
+      >
+    </blog-card>
     </v-container>
     <h2 v-else>Nothing to show...</h2>
   </v-container>
@@ -31,7 +32,7 @@ export default {
   },
   methods: {
     extractBlogData: async function () {
-      const response = await this.$http.get('/api/blog/')
+      const response = await this.$http.get('/api/blog/all/headlines')
       this.blogs = response.data
     }
   }

@@ -151,7 +151,7 @@ class BlogExtractionAPITest(TestCase):
 
         # target attributes shoud be included in return items
         attrs = ['title', 'headline', 'body', 'image', 'created_at', 'updated_at']
-        response = self.client.get('/api/blog/')
+        response = self.client.get('/api/blog/all')
 
         self.assertEqual(response.status_code, 200)
 
@@ -169,3 +169,78 @@ class BlogExtractionAPITest(TestCase):
                 self.assertIn(attr, keys)
 
             self.assertIn('path', query.get('image'))
+
+    def test_item_headline_list(self):
+        target_count = 5
+        self.create_content(target_count)
+
+        # target attributes shoud be included in return items
+        attrs = ['title', 'headline', 'image', 'created_at', 'updated_at']
+        response = self.client.get('/api/blog/all/headlines')
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.data
+
+        # check extracted data count is correct
+        self.assertEqual(len(data), target_count)
+        self.assertEqual(len(data), Content.objects.count())
+
+        # check all extracted items have expected attributes
+        for query in data:
+            keys = set(query.keys())
+
+            for attr in attrs:
+                self.assertIn(attr, keys)
+
+            self.assertNotIn('body', keys)
+
+            self.assertIn('path', query.get('image'))
+
+    def test_extract_item(self):
+        self.create_content(1)
+
+        content = Content.objects.first()
+
+        # target attributes shoud be included in return items
+        attrs = ['title', 'headline', 'body', 'image', 'created_at', 'updated_at']
+
+        # extract item by slug
+        response = self.client.get(f'/api/blog/item/{content.slug}')
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.data
+
+        # check all extracted items have expected attributes
+        keys = set(data.keys())
+
+        for attr in attrs:
+            self.assertIn(attr, keys)
+
+        self.assertIn('path', data.get('image'))
+
+        # content is sent after processed by paragraph
+        body = content.body.split('\n')
+
+        self.assertEqual(content.title, data.get('title'))
+        self.assertEqual(content.headline, data.get('headline'))
+        self.assertEqual(len(body), len(data.get('body')))
+        self.assertEqual(body[0], data.get('body')[0])
+
+        # extract item by uuid
+        response = self.client.get(f'/api/blog/item/id/{content.uuid}')
+        self.assertEqual(response.status_code, 200)
+
+        data = response.data
+        self.assertEqual(content.title, data.get('title'))
+        self.assertEqual(content.headline, data.get('headline'))
+        self.assertEqual(len(body), len(data.get('body')))
+        self.assertEqual(body[0], data.get('body')[0])
+
+        # handle non-exist api request
+        response = self.client.get(f'/api/blog/item/not-exist-slug')
+        self.assertEqual(response.status_code, 200)
+
+        # return empty item
+        self.assertFalse(response.data)

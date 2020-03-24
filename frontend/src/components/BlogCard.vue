@@ -8,7 +8,7 @@
     width="85%"
     max-width="800px"
     :elevation="hover ? 10 : 4"
-    :to="'#'"
+    :to="'/blog/' + blog.slug"
   >
     <v-img
       class="white--text align-end"

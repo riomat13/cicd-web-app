@@ -15,7 +15,7 @@
           top
           right
           color="white"
-          href="/login/"
+          to="/login/"
           outlined
           x-large
         >Login</v-btn>
@@ -35,7 +35,7 @@
         <v-responsive class="mx-auto title font-weight-light mb-8">
           This is a sample blog app developed to learn CI/CD process.
         </v-responsive>
-        <v-btn color="grey" href="/about/" outlined large>
+        <v-btn color="grey" to="/about/" outlined large>
           <span class="grey--text text--darken-1 font-weight-bold">
             Go to About page
           </span>
@@ -116,7 +116,7 @@
           </v-col>
           <v-col cols="6">
             <blockquote class="py-3">{{ feature.text }}</blockquote>
-            <v-btn v-if="feature.path" :href="feature.path" text>>> Go to {{ feature.linkname }}</v-btn>
+            <v-btn v-if="feature.path" :to="feature.path" text>>> Go to {{ feature.linkname }}</v-btn>
           </v-col>
         </v-row>
 
@@ -128,7 +128,7 @@
         >
           <v-col cols="6">
             <blockquote class="py-3">{{ feature.text }}</blockquote>
-            <v-btn v-if="feature.path" :href="feature.path" text>>> Go to {{ feature.linkname }}</v-btn>
+            <v-btn v-if="feature.path" :to="feature.path" text>>> Go to {{ feature.linkname }}</v-btn>
           </v-col>
           <v-col class="text-center" cols="3">
             <v-icon class="pa-3 mb-2" x-large>{{ feature.icon }}</v-icon>

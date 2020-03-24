@@ -4,6 +4,7 @@ import Index from '@/views/Index'
 import Login from '@/views/Login'
 import About from '@/views/About'
 import Blog from '@/views/BlogTop'
+import BlogContent from '@/views/BlogContent'
 
 Vue.use(Router)
 
@@ -31,6 +32,11 @@ export default new Router({
       path: '/blog',
       name: 'blog',
       component: Blog
+    },
+    {
+      path: '/blog/:slug',
+      name: 'blog-content',
+      component: BlogContent
     }
   ]
 })
