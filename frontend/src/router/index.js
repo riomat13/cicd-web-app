@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Home from '@/views/Home'
 import Index from '@/views/Index'
 import Login from '@/views/Login'
 import About from '@/views/About'
@@ -14,14 +15,19 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'home',
+      component: Home,
+      meta: { hideNavigation: true }
+    },
+    {
+      path: '/index',
       name: 'index',
       component: Index
     },
     {
       path: '/login',
       name: 'login',
-      component: Login,
-      meta: { hideNavigation: true }
+      component: Login
     },
     {
       path: '/about',

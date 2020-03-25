@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-4 mt-4 col-lg-6 col-md-8 col-10">
-    <h1 class="display-3 font-light mb-3">{{ content.title }}</h1>
+    <h1 class="display-2 font-weight-light mb-3">{{ content.title }}</h1>
     <v-row justify="end">
       <v-col id="content-date" class="col-4">
         <p class="body-1 font-weight-light">Created: {{ content.created_at | formatDate }}</p>

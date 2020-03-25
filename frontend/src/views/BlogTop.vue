@@ -2,7 +2,7 @@
   <v-container
     class="pa-4 mt-4 col-lg-6 col-md-8 col-10"
   >
-    <h1 class="display-3 font-light">Blog</h1>
+    <h1 class="display-2 font-weight-light">Blog</h1>
     <v-container v-if="blogs" fluid>
       <blog-card
         v-for="(blog, index) in blogs"

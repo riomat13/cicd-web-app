@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <v-row align="center" justify="center" height="100%">
+  <v-container id="login-form-container" fill-height>
+    <v-row align="center" justify="center">
       <login-form />
     </v-row>
   </v-container>
@@ -14,6 +14,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-</style>

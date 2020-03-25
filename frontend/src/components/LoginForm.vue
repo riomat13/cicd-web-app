@@ -1,8 +1,8 @@
 <template>
-  <v-card class="elevation-8 mt-10 mx-auto" width="350px">
-    <v-toolbar color="primary" dark flat>
-      <v-toolbar-title>
-        <h3>Login</h3>
+  <v-card class="mx-auto col-8" max-width="500" flat>
+    <v-toolbar flat>
+      <v-toolbar-title class="pa-2 mb-3">
+        <h1 class="display-2 font-weight-regular blue--text">Login</h1>
       </v-toolbar-title>
     </v-toolbar>
     <v-alert
@@ -15,12 +15,23 @@
     >
       Wrong username and/or password
     </v-alert>
-    <v-card-text class="pa-3 my-4">
+    <v-alert
+      class="ma-5 body-2"
+      v-if="this.$store.getters.isLoggedIn"
+      border="top"
+      colored-border
+      type="info"
+      elevation=2
+    >
+      You are already logged in
+    </v-alert>
+    <v-card-text class="pa-2 my-4">
       <v-form ref="form" lazy-validation>
         <v-text-field
           class="my-3"
           v-model="username"
           :rules="nameRules"
+          :disabled="this.$store.getters.isLoggedIn"
           label="Username"
           prepend-icon="mdi-account-circle"
           required
@@ -29,18 +40,36 @@
           class="mt-7"
           v-model="password"
           :rules="passwordRules"
+          :disabled="this.$store.getters.isLoggedIn"
           type="password"
           label="Password"
-          prepend-icon="mdi-lock"
           append-icon="mdi-eye-off"
+          prepend-icon="mdi-lock"
           required
         ></v-text-field>
       </v-form>
     </v-card-text>
-    <v-card-actions class="pa-4">
-      <v-spacer></v-spacer>
-      <v-btn color="normal" :to="'/'" text>Back</v-btn>
-      <v-btn color="primary" v-on:click="login()" :disabled="!(validUsername && validPassword)">Login</v-btn>
+    <v-card-actions class="my-4">
+      <v-row align="center" justify="center">
+        <v-col class="col-10">
+          <v-btn
+            color="primary"
+            height="45"
+            width="100%"
+            v-on:click="login()"
+            :disabled="!(validUsername && validPassword)"
+          >Login</v-btn>
+        </v-col>
+        <v-col class="col-10">
+          <v-btn
+            color="normal"
+            height="45"
+            width="100%"
+            v-on:click="back()"
+            text
+          >Back</v-btn>
+        </v-col>
+      </v-row>
     </v-card-actions>
   </v-card>
 </template>
@@ -89,10 +118,13 @@ export default {
       const password = this.password
       this.$store
         .dispatch('login', { username, password })
-        .then(() => this.$router.push('/'))
+        .then(() => this.$router.push('/index'))
         .catch(function (err) {
           self.invalidInput = err !== null // how to handle error?
         })
+    },
+    back () {
+      this.$router.go(-1)
     }
   }
 }

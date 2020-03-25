@@ -1,13 +1,11 @@
 <template>
   <v-app>
-    <nav-bar
-      v-if="this.$route.path!='/'"
-      v-bind:isScrolled="activateElevation" />
+    <nav-bar v-bind:isScrolled="activateElevation" />
     <v-content v-scroll="onScroll" fluid>
-      <div class="content">
-        <router-view ref="chileComponent" />
-      </div>
-      <go-to-top v-bind:activated="activateGoToTop" />
+      <router-view />
+      <go-to-top
+       v-if="this.$route.path!='/login'"
+       v-bind:activated="activateGoToTop" />
     </v-content>
     <v-footer class="justify-center">
       <div class="text-center body-1 font-weight-regular my-2">
@@ -53,9 +51,6 @@ export default {
 }
 .content-title {
   margin: 10px;
-}
-.content {
-  margin: 0;
 }
 #footer-link a {
   color: black;

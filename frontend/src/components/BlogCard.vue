@@ -6,7 +6,7 @@
   <v-card
     class="mx-auto my-10"
     width="85%"
-    max-width="800px"
+    max-width="700px"
     :elevation="hover ? 10 : 4"
     :to="'/blog/' + blog.slug"
   >

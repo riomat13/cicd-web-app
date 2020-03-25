@@ -6,16 +6,15 @@
       :elevation="isScrolled ? 6 : 0"
       app
     >
+    <router-link to="/" id="logo">
       <v-toolbar-title
         class="headline
-               px-2
-               font-weight-regular
+               pa-4
                font-italic
-               grey--text
-               text--darken-3"
+               font-weight-regular"
       >
-          CI/CD Blog App
-      </v-toolbar-title>
+        CI/CD Blog App
+      </v-toolbar-title></router-link>
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn
@@ -58,7 +57,7 @@ export default {
   data () {
     return {
       menuItems: [
-        { title: 'Home', path: '/' },
+        { title: 'Home', path: '/index' },
         { title: 'About', path: '/about' },
         { title: 'Blog', path: '/blog' }
       ],
@@ -75,8 +74,8 @@ export default {
     logout () {
       this.loggingOut = false
       this.$store.dispatch('logout').then(() => {
-        if (this.$route.path !== '/') {
-          this.$router.push('/')
+        if (this.$route.path !== '/index') {
+          this.$router.push('/index')
         }
       })
     }
@@ -84,5 +83,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+#logo {
+  color: #424242;
+  text-decoration: none;
+}
 </style>
