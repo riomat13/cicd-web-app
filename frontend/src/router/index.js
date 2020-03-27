@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/views/Home'
 import Index from '@/views/Index'
 import Login from '@/views/Login'
+import Profile from '@/views/Profile'
 import About from '@/views/About'
 import Blog from '@/views/BlogTop'
 import BlogContent from '@/views/BlogContent'
@@ -28,6 +29,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/account/profile',
+      name: 'profile',
+      component: Profile
     },
     {
       path: '/about',

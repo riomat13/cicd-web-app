@@ -12,12 +12,12 @@ from blog.models import Content
 from accounts.models import User
 
 
-ADMIN_NAME = 'test'
-ADMIN_EMAIL = 'test@example.com'
+ADMIN_NAME = 'test-blog'
+ADMIN_EMAIL = 'test@-blogexample.com'
 ADMIN_PASSWORD = 'test'
 
-USERNAME = 'user'
-USER_EMAIL = 'testuser@example.com'
+USERNAME = 'user-blog'
+USER_EMAIL = 'testuser-blog@example.com'
 USER_PASSWORD = 'user'
 
 admin = None

@@ -20,6 +20,12 @@ Vue.filter('formatDate', function (value) {
   }
 })
 
+Vue.filter('capitalize', (value) => {
+  if (value) {
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
+  }
+})
+
 const token = localStorage.getItem('token')
 if (token) {
   Vue.prototype.$http.defaults.headers.common.Authorization = token

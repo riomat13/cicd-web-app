@@ -1,75 +1,53 @@
 #!/usr/bin/env python3
 
-from django.contrib.auth import authenticate
-from django.utils import timezone
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import AllowAny
-from rest_framework.authtoken.models import Token
+from django.core.exceptions import ObjectDoesNotExist
+
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_200_OK,
     HTTP_400_BAD_REQUEST,
-    HTTP_404_NOT_FOUND
+    HTTP_401_UNAUTHORIZED,
 )
+from rest_framework.views import APIView
 
-from ..auth import expires_in, token_expire_handler
 from ..models import User
-from .serializers import UserSerializer, UserLogInSerializer
+from .serializers import UserSerializer
 
 
-@api_view(['POST'])
-@permission_classes((AllowAny,))
-def login(request):
-    login_serializer = UserLogInSerializer(data=request.data)
+class UserAPIView(APIView):
+    queryset = User.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
+    lookup_field = ''
 
-    if not login_serializer.is_valid():
-        return Response(login_serializer.errors, status=HTTP_400_BAD_REQUEST)
+    def get(self, request, *args, **kwargs):
+        username = kwargs.get('username')
 
-    user = authenticate(
-        username=login_serializer.data['username'],
-        password=login_serializer.data['password']
-    )
-    if not user:
-        return Response(
-            {'detail': 'Invalid credential or active account'},
-            status=HTTP_404_NOT_FOUND
-        )
+        # check if user is superuser when requested user data
+        # and request sender do not match
+        if request.user.username != username \
+                and not request.user.is_superuser:
+            return Response({
+                'detail': 'Prohibited to extract other user information'
+            }, HTTP_401_UNAUTHORIZED)
 
-    token, _ = Token.objects.get_or_create(user=user)
+        # return error if invalid request is received
+        if username is None:
+            return Response({
+                'detail': 'Bad request'
+            }, HTTP_400_BAD_REQUEST)
 
-    is_expired, token = token_expire_handler(token)
+        try:
+            user = User.objects.get(username=username)
+        except ObjectDoesNotExist:
+            return Response({
+                'detail': 'Target user does not exist'
+            }, HTTP_400_BAD_REQUEST)
 
-    if is_expired:
-        # recreate token if expired
-        token = Token.objects.create(user=user)
-    else:
-        # if not expired, extend time of token alive
-        token.created = timezone.now()
-
-    user_selialized = UserSerializer(user)
-
-    return Response({
-        'user': user_selialized.data,
-        'expires_in': expires_in(token),
-        'token': token.key
-    }, status=HTTP_200_OK)
-
-
-@api_view(['DELETE'])
-def logout(request):
-    try:
-        user = User.objects.get(username=request.data.get('username'))
-    except User.DoesNotExist:
-        return Response(
-            {'detail': 'Invalid credentials or active account'},
-            status=HTTP_404_NOT_FOUND
-        )
-
-    token = Token.objects.get(user=user)
-    if token is not None:
-        token.delete()
-
-    return Response({
-        'detail': 'removed login status'
-    }, status=HTTP_200_OK)
+        return Response({
+            'username': user.username,
+            'firstname': user.first_name,
+            'lastname': user.last_name,
+            'email': user.email
+        }, HTTP_200_OK)

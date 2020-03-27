@@ -30,23 +30,40 @@
           :key="loginSet.title"
           :to="loginSet.path"
         >Login</v-btn>
-        <v-btn
-          text
-          v-else
-          @click.stop="loggingOut = true"
-        >Logout</v-btn>
-        <v-dialog v-model="loggingOut" max-width="300">
-          <v-card>
-            <v-card-title class="headline">Logout</v-card-title>
-            <v-card-text>Are you sure to log out?</v-card-text>
+        <v-menu v-else open-on-click offset-y>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              text
+              v-on="on"
+            ><v-icon>arrow_drop_down</v-icon>Account</v-btn>
+          </template>
+          <v-list elevation="2">
+            <v-list-item to="/account/profile">
+              <v-list-item-title
+              ><v-icon>account_box</v-icon> Profile</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="0">
+              <v-list-item-title
+              ><v-icon>settings</v-icon> Settings</v-list-item-title>
+            </v-list-item>
+            <v-divider class="mx-2"></v-divider>
+            <v-list-item @click.stop="loggingOut = true">
+              <v-list-item-title><v-icon>exit_to_app</v-icon> Logout</v-list-item-title>
+            </v-list-item>
+          </v-list>
+          <v-dialog v-model="loggingOut" max-width="300">
+            <v-card>
+              <v-card-title class="headline">Logout</v-card-title>
+              <v-card-text>Are you sure to log out?</v-card-text>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn text @click="loggingOut=false">Back</v-btn>
-              <v-btn color="error" text @click="logout">Logout</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn text @click="loggingOut=false">Back</v-btn>
+                <v-btn color="error" text @click="logout">Logout</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-menu>
       </v-toolbar-items>
     </v-app-bar>
 </template>

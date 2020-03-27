@@ -8,12 +8,7 @@ from ..models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email']
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']
 
     def __str__(self):
         return self.username
-
-
-class UserLogInSerializer(serializers.Serializer):
-    username = serializers.CharField(required=True)
-    password = serializers.CharField(required=True)
