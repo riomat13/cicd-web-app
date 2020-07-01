@@ -11,8 +11,8 @@ media/
 # development
 json-server.json
 dev/
-.env/
-.env*.dev
+.venv/
+.env*
 db.*
 *db
 *.sqlite3

@@ -1,11 +1,20 @@
-*.pyc
-__pycache__/
+.git*
+**/*.pyc
+**/__pycache__/
 
-tests/
-__tests__/
+cicd_app/settings/*
+!cicd_app/settings/__init__.py
+!cicd_app/settings/base.py
+!cicd_app/settings/production.py
 
-.env/
+**/*.db
+
+**/tests
+**/__tests__
+
+.venv/
 dev/
+dist/
 
 frontend/*
 !frontend/dist

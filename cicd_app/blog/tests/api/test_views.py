@@ -239,7 +239,7 @@ class BlogExtractionAPITest(TestCase):
         self.assertEqual(body[0], data.get('body')[0])
 
         # handle non-exist api request
-        response = self.client.get(f'/api/blog/item/not-exist-slug')
+        response = self.client.get('/api/blog/item/not-exist-slug')
         self.assertEqual(response.status_code, 200)
 
         # return empty item

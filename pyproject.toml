@@ -6,7 +6,7 @@ authors = ["Rio Matsuoka <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.6,<3.9"
-django = "^3.0.4"
+django = "^3.0.7"
 djangorestframework = "^3.11.0"
 djangorestframework-simplejwt = "^4.4.0"
 django-cors-headers = "^3.2.1"
@@ -19,6 +19,7 @@ whitenoise = "^5.0.1"
 coverage = "^5.0.4"
 django-debug-toolbar = "^2.2"
 tox = "^3.14.5"
+flake8 = "^3.8.3"
 
 [tool.tox]
 legacy_tox_ini = """

@@ -10,6 +10,7 @@ from rest_framework.status import (
     HTTP_401_UNAUTHORIZED,
 )
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from ..models import User
 from .serializers import UserSerializer
@@ -50,4 +51,43 @@ class UserAPIView(APIView):
             'firstname': user.first_name,
             'lastname': user.last_name,
             'email': user.email
+        }, HTTP_200_OK)
+
+
+class UserEditAPIView(APIView):
+    queryset = User.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
+    lookup_field = ''
+
+    def put(self, request, *args, **kwargs):
+        data = request.data
+
+        try:
+            user = User.objects.get(username=request.user.username)
+        except ObjectDoesNotExist:
+            return Response({
+                'detail': 'invalid request'
+            }, HTTP_400_BAD_REQUEST)
+
+        email = data.get('email')
+        firstname = data.get('firstname')
+        lastname = data.get('lastname')
+
+        if email is not None:
+            user.email = email
+        if firstname is not None:
+            user.first_name = firstname
+        if lastname is not None:
+            user.last_name = lastname
+
+        try:
+            user.save()
+        except Exception as e:
+            return Response({
+                'detail': str(e)
+            }, HTTP_400_BAD_REQUEST)
+
+        return Response({
+            'detail': 'successfully edited'
         }, HTTP_200_OK)
