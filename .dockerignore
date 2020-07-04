@@ -1,20 +1,39 @@
 .git*
+**/*.md
 **/*.pyc
 **/__pycache__/
+
+poetry.lock
+pyproject.toml
 
 cicd_app/settings/*
 !cicd_app/settings/__init__.py
 !cicd_app/settings/base.py
 !cicd_app/settings/production.py
 
+**/*.sh
+!entrypoint.sh
+
 **/*.db
 
+.coverage*
+.tox/
+.vscode/
 **/tests
 **/__tests__
 
+.env*
 .venv/
 dev/
 dist/
+static/
+media/
+requirements-dev.txt
+
+docker/
+.dockerignore
+
+**/node_modules
 
 frontend/*
 !frontend/dist

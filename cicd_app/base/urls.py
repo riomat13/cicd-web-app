@@ -18,6 +18,8 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 
+from cicd_app.accounts import urls as account_urls
+from cicd_app.blog import urls as blog_urls
 from . import views
 
 
@@ -32,7 +34,7 @@ if settings.DEBUG:
         + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [
-    path('api/account/', include('accounts.urls')),
-    path('api/blog/', include('blog.urls')),
+    path('api/account/', include(account_urls)),
+    path('api/blog/', include(blog_urls)),
     re_path(r'^(?:.*)/?$', views.index),
 ]

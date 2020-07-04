@@ -15,7 +15,7 @@ from pathlib import Path
 import datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = Path(os.path.dirname(__file__)).parent.parent
+BASE_DIR = os.environ.get('APP_ROOT', Path(os.path.dirname(__file__)).parent.parent)
 
 
 # Quick-start development settings - unsuitable for production
@@ -41,8 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
-    'accounts',
-    'blog'
+    'cicd_app.accounts',
+    'cicd_app.blog'
 ]
 
 MIDDLEWARE = [
@@ -75,7 +75,7 @@ CORS_ORIGIN_WHITE_LIST = [
     'http://127.0.0.1:8080',
 ]
 
-ROOT_URLCONF = 'base.urls'
+ROOT_URLCONF = 'cicd_app.base.urls'
 
 TEMPLATES = [
     {
@@ -93,7 +93,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'base.wsgi.application'
+WSGI_APPLICATION = 'cicd_app.base.wsgi.application'
 
 
 # Database
@@ -103,8 +103,8 @@ DATABASES = {
     'default': {
         'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.sqlite3'),
         'NAME': os.environ.get('DB_NAME', 'db'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'USER': os.environ.get('SQL_USER'),
+        'PASSWORD': os.environ.get('SQL_PASSWORD'),
         'HOST': os.environ.get('DB_HOST', 'localhost'),
         'PORT': os.environ.get('DB_PORT'),
         'TEST': {

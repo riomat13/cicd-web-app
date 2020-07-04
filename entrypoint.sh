@@ -1,10 +1,8 @@
 #!/bin/sh
 
-cd /app/cicd_app
-export DJANGO_SETTINGS_MODULE=settings.production
-
 DB_ENGINE_NAME=$(echo ${DB_ENGINE} | awk -F'.' '{print $4}')
 
+# wait for database being ready
 if [ "$DB_ENGINE_NAME" = "postgresql" ]; then
   echo "Starting database..."
 
@@ -15,11 +13,24 @@ if [ "$DB_ENGINE_NAME" = "postgresql" ]; then
   echo "Database is up"
 fi
 
-python manage.py migrate --no-input
-python manage.py createsuperuser --noinput
+# parse env file
+if [ -f ".env.prod" ]; then
+  while IFS= read -r line; do
+    export $line
+  done < .env.prod
 
+  unset DB_HOST
+  unset DB_ENGINE
+fi
+
+# initial setup
+manage.py collectstatic --noinput
+manage.py migrate --noinput
+manage.py createsuperuser --noinput
+
+# setup for logging
 if [ ! -d "/app/logs" ]; then
-  mkdir logs
+  mkdir -p /app/logs
 fi
 
 touch /app/logs/gunicorn.log
