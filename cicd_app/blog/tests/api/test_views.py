@@ -8,8 +8,8 @@ from django.test import TestCase
 
 from rest_framework.test import APIClient
 
-from blog.models import Content
-from accounts.models import User
+from cicd_app.blog.models import Content
+from cicd_app.accounts.models import User
 
 
 ADMIN_NAME = 'test-blog'

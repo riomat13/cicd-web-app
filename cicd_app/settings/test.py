@@ -7,8 +7,8 @@ DEBUG = True
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'test-db',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': '/tmp/test.db',
         'HOST': 'localhost'
     }
 }

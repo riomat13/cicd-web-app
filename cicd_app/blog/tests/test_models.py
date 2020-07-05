@@ -9,7 +9,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 
-from blog.models import Content
+from cicd_app.blog.models import Content
 
 
 class TestContent(TestCase):
@@ -60,7 +60,7 @@ class TestContent(TestCase):
         content = Content.objects.get(id=id)
         self.assertEqual(content.title, new_title)
 
-    @patch('blog.models.os.remove')
+    @patch('cicd_app.blog.models.os.remove')
     def test_blog_content_deletion(self, remove):
         id = self.create_content()
 

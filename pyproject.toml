@@ -5,7 +5,7 @@ description = ""
 authors = ["Rio Matsuoka <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = ">=3.6,<3.9"
+python = ">3.6,<3.9"
 django = "^3.0.7"
 djangorestframework = "^3.11.0"
 djangorestframework-simplejwt = "^4.4.0"
@@ -25,11 +25,17 @@ flake8 = "^3.8.3"
 legacy_tox_ini = """
 [tox]
 isolated_build = True
-envlist = py36, py37, py38
+envlist = py37, py38
 
 [testenv]
-deps = -rrequirements.txt
-commands = python3 manage.py test
+deps = -rrequirements-dev.txt
+whitelist_externals = /bin/sh
+commands =
+    pip install -q -e .
+    flake8 --ignore=E501,F401,F403,F405 cicd_app/
+    sh entrypoint.test.sh
+    coverage run --source="." scripts/manage.py test --settings=cicd_app.settings.test
+    coverage report -m
 """
 [build-system]
 requires = ["poetry>=0.12"]

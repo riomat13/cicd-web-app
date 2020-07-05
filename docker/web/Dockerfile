@@ -20,11 +20,9 @@ RUN apk update \
         libjpeg \
         jpeg-dev \
         zlib-dev \
-    && pip install --upgrade pip \
-    && pip install flake8
+    && pip install --upgrade pip
 
 COPY . /app/
-RUN flake8 --ignore=E501,F401,F403,F405 .
 
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
 

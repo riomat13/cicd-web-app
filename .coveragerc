@@ -1,6 +1,17 @@
 [run]
 omit =
+  setup.py
+  scripts/*
   .venv/*
+  .tox/*
   */migrations/*
   */urls.py
-  manage.py
+  */wsgi.py
+  */asgi.py
+  */apps.py
+  */settings/*
+  */tests/*
+[report]
+exclude_lines =
+    pragma: no cover
+    if __name__ == .__main__.
