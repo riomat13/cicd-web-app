@@ -55,18 +55,18 @@
           <v-btn
             color="primary"
             height="45"
-            width="100%"
             v-on:click="login()"
             :disabled="!(validUsername && validPassword)"
+            block
           >Login</v-btn>
         </v-col>
         <v-col class="col-10">
           <v-btn
             color="normal"
             height="45"
-            width="100%"
             v-on:click="back()"
             text
+            block
           >Back</v-btn>
         </v-col>
       </v-row>

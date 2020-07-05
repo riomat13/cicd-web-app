@@ -52,7 +52,7 @@
       <div class="py-12"></div>
 
       <v-container class="text-center">
-        <h2 class="display-2 font-weight-bold mb-3">Tools</h2>
+        <h2 class="display-2 font-weight-bold mb-3 grey--text text--darken-3">Tools</h2>
       </v-container>
 
       <v-row class="px-10">
@@ -63,11 +63,14 @@
           md="4"
         >
           <v-card class="py-12 px-4 text-center" color="grey lighten-5" flat>
-            <v-card-title class="justify-center font-weight-black"
+            <v-card-title class="justify-center grey--text text--darken-4"
               v-text="tool.title"
             ></v-card-title>
 
-            <v-card-text class="subtitle-1" v-text="tool.text"></v-card-text>
+            <v-card-text
+              class="subtitle-1 grey--text text--darken-3"
+              v-text="tool.text"
+            ></v-card-text>
             <v-btn color="grey" :href="tool.link" outlined>
               <span class="grey--text text--darken-1 font-weight-bold">Link</span>
             </v-btn>
@@ -220,8 +223,8 @@ export default {
   mounted () {
     this.onResize()
 
-    if (localStorage.username) {
-      this.username = localStorage.username
+    if (sessionStorage.username) {
+      this.username = sessionStorage.username
     }
   },
   methods: {

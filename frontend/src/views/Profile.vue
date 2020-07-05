@@ -3,7 +3,7 @@
     <v-row
       id="profile-table"
       class="headline font-weight-light my-3 mx-auto"
-      v-for="(item, index) in this.userInfo"
+      v-for="(item, index) in this.userItems"
       v-bind:key="index"
       align="center"
       justify="center"
@@ -20,22 +20,31 @@
       class="mt-10"
       justify="center"
     >
-      <v-btn
-      color="grey"
-      @click="back"
-      outlined
-      x-large
-      >Back</v-btn>
+        <v-btn
+        color="grey lighten-2"
+        :to="{ name: 'profile-edit', params: {userInfo: userInfo} }"
+        x-large
+        v-bind:userInfo="userInfo"
+        depressed
+        >Edit</v-btn>
+        <div class="mx-8"></div>
+        <back-btn color="grey" />
     </v-row>
 
   </v-container>
 </template>
 
 <script>
+import BackButton from '@/components/BackButton'
+
 export default {
+  components: {
+    'back-btn': BackButton
+  },
   data () {
     return {
-      userInfo: []
+      userItems: [],
+      userInfo: {}
     }
   },
   mounted () {
@@ -48,7 +57,7 @@ export default {
       )
         .then((response) => {
           const access = response.data.access
-          localStorage.setItem('at', access)
+          sessionStorage.setItem('at', access)
         })
         .catch(() => {
           this.$store.dispatch('logout').then(() => {
@@ -60,18 +69,26 @@ export default {
     },
     extractUserInfo: async function () {
       const res = await this.$http.get(
-        '/api/account/detail/' + localStorage.username, {
+        '/api/account/profile/' + sessionStorage.username, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('at')}`
+            Authorization: `Bearer ${sessionStorage.getItem('at')}`
           }
         }
-      )
-      this.userInfo = [
-        { title: 'username', value: res.data.username },
+      ).catch(() => {
+        this.$router.push({ name: 'index', params: {} })
+      })
+      this.userItems = [
+        { title: 'username', value: sessionStorage.username },
         { title: 'first name', value: res.data.firstname },
         { title: 'last name', value: res.data.lastname },
         { title: 'email', value: res.data.email }
       ]
+      this.userInfo = {
+        username: res.data.username,
+        firstname: res.data.firstname,
+        lastname: res.data.lastname,
+        email: res.data.email
+      }
     },
     back () {
       this.$router.go(-1)

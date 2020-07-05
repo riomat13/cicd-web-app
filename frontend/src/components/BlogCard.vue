@@ -15,7 +15,7 @@
       height="250px"
       v-bind:src="blog.image.path"
     >
-      <v-card-title>{{ blog.title }}</v-card-title>
+      <v-card-title :color="$vuetify.theme.dark ? 'white' : 'grey darken-4'">{{ blog.title }}</v-card-title>
     </v-img>
     <v-card-subtitle class="pb-0 my-5">{{ blog.headline }}</v-card-subtitle>
     <v-card-text>Last update: {{ blog.updated_at | formatDate }}</v-card-text>

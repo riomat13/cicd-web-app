@@ -6,9 +6,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     status: '',
-    access: localStorage.getItem('at') || '',
-    refresh: localStorage.getItem('rt') || '',
-    isAuthenticated: localStorage.getItem('username') !== null
+    access: sessionStorage.getItem('at') || '',
+    refresh: sessionStorage.getItem('rt') || '',
+    isAuthenticated: sessionStorage.getItem('username') !== null
   },
   mutations: {
     auth_request (state) {
@@ -39,26 +39,26 @@ export default new Vuex.Store({
             const access = response.data.access
             const refresh = response.data.refresh
             Vue.prototype.$http.defaults.headers.common.Authorization = access
-            localStorage.setItem('at', access)
-            localStorage.setItem('rt', refresh)
+            sessionStorage.setItem('at', access)
+            sessionStorage.setItem('rt', refresh)
             commit('auth_success', access, refresh)
-            localStorage.setItem('username', data.username)
+            sessionStorage.setItem('username', data.username)
             resolve(response)
           })
           .catch((err) => {
             commit('auth_failed')
-            localStorage.removeItem('at')
-            localStorage.removeItem('rt')
-            localStorage.removeItem('username')
+            sessionStorage.removeItem('at')
+            sessionStorage.removeItem('rt')
+            sessionStorage.removeItem('username')
             reject(err)
           })
       })
     },
     logout: ({ commit }) => {
       return new Promise((resolve, reject) => {
-        localStorage.removeItem('at')
-        localStorage.removeItem('rt')
-        localStorage.removeItem('username')
+        sessionStorage.removeItem('at')
+        sessionStorage.removeItem('rt')
+        sessionStorage.removeItem('username')
         delete Vue.prototype.$http.defaults.headers.common.Authorization
         commit('let_logout')
         resolve()

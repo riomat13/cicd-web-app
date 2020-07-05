@@ -16,9 +16,9 @@
         CI/CD Blog App
       </v-toolbar-title></router-link>
       <v-spacer></v-spacer>
-      <v-toolbar-items>
+      <v-toolbar-items id="nav-bar-items">
         <v-btn
-          class="px-7"
+          class="px-7 grey--text text--darken-3"
           text
           v-for="item in menuItems"
           :key="item.title"
@@ -33,6 +33,7 @@
         <v-menu v-else open-on-click offset-y>
           <template v-slot:activator="{ on }">
             <v-btn
+              class="grey--text text--darken-3"
               text
               v-on="on"
             ><v-icon>arrow_drop_down</v-icon>Account</v-btn>
@@ -42,7 +43,7 @@
               <v-list-item-title
               ><v-icon>account_box</v-icon> Profile</v-list-item-title>
             </v-list-item>
-            <v-list-item @click="0">
+            <v-list-item to="/account/settings">
               <v-list-item-title
               ><v-icon>settings</v-icon> Settings</v-list-item-title>
             </v-list-item>

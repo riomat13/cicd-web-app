@@ -52,3 +52,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Not track on public repository
+favicon.ico

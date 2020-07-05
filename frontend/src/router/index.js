@@ -4,6 +4,8 @@ import Home from '@/views/Home'
 import Index from '@/views/Index'
 import Login from '@/views/Login'
 import Profile from '@/views/Profile'
+import EditProfile from '@/views/EditProfile'
+import Settings from '@/views/Settings'
 import About from '@/views/About'
 import Blog from '@/views/BlogTop'
 import BlogContent from '@/views/BlogContent'
@@ -34,6 +36,17 @@ export default new Router({
       path: '/account/profile',
       name: 'profile',
       component: Profile
+    },
+    {
+      path: '/account/profile/edit',
+      name: 'profile-edit',
+      component: EditProfile,
+      props: true
+    },
+    {
+      path: '/account/settings',
+      name: 'settings',
+      component: Settings
     },
     {
       path: '/about',
